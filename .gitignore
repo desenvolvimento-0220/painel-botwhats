@@ -1,0 +1,22 @@
+
+# Ambiente virtual Python
+.venv/
+venv/
+
+# Arquivos temporários Python
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Credenciais e senhas
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# Configurações locais do editor
+.vscode/
