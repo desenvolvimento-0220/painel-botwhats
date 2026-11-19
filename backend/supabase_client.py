@@ -2,7 +2,7 @@
 import os
 from pathlib import Path
 
-from supabase import create_client, Client
+from supabase import create_client, Client, ClientOptions
 
 
 def carregar_configuracoes():
@@ -36,4 +36,5 @@ def criar_cliente_supabase() -> Client:
     if not url or not chave:
         raise RuntimeError("Configuração Supabase incompleta.")
 
-    return create_client(url, chave)
+    # A renovação acontece sob o lock da sessão no gateway, nunca em um timer.
+    return create_client(url, chave, options=ClientOptions(auto_refresh_token=False))

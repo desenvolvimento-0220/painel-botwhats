@@ -1,7 +1,9 @@
 import streamlit as st
 
-# Configuração da página (O White Label começa aqui)
+from backend.session import proteger_painel
+
 st.set_page_config(page_title="Painel BotWhats", page_icon="🤖", layout="wide")
+proteger_painel()
 
 # Barra lateral para navegação
 st.sidebar.title("🤖 Meu BotWhats")

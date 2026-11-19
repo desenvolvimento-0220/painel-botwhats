@@ -1,37 +1,44 @@
+"""Teste manual com Supabase real; importar este módulo não executa o login."""
 
 from getpass import getpass
 from backend.supabase_client import criar_cliente_supabase
 
-print("=== BotWhats — Teste de Login do Dono ===")
 
-email = input("E-mail do Dono: ").strip()
-senha = getpass("Senha: ")
+def main():
+    print("=== BotWhats — Teste de Login do Dono ===")
 
-cliente = criar_cliente_supabase()
+    email = input("E-mail do Dono: ").strip()
+    senha = getpass("Senha: ")
 
-try:
-    # Autenticação no Supabase
-    resposta = cliente.auth.sign_in_with_password({
-        "email": email,
-        "password": senha,
-    })
+    cliente = criar_cliente_supabase()
 
-    if not resposta.user or not resposta.session:
-        raise RuntimeError("Sessão não foi criada.")
+    try:
+        # Autenticação no Supabase
+        resposta = cliente.auth.sign_in_with_password({
+            "email": email,
+            "password": senha,
+        })
 
-    print("Login autenticado com sucesso!")
+        if not resposta.user or not resposta.session:
+            raise RuntimeError("Sessão não foi criada.")
 
-    # Verificação do papel administrativo
-    resultado = cliente.rpc("sou_dono").execute()
+        print("Login autenticado com sucesso!")
 
-    if resultado.data is True:
-        print("SUCESSO: usuário autorizado como Dono.")
-    else:
-        print("ACESSO NEGADO: usuário não é Dono.")
+        # Verificação do papel administrativo
+        resultado = cliente.rpc("sou_dono").execute()
 
-except Exception as erro:
-    print(f"Falha na autenticação ou autorização: {type(erro).__name__}")
+        if resultado.data is True:
+            print("SUCESSO: usuário autorizado como Dono.")
+        else:
+            print("ACESSO NEGADO: usuário não é Dono.")
 
-finally:
-    cliente.auth.sign_out()
-    print("Teste encerrado.")
+    except Exception as erro:
+        print(f"Falha na autenticação ou autorização: {type(erro).__name__}")
+
+    finally:
+        cliente.auth.sign_out()
+        print("Teste encerrado.")
+
+
+if __name__ == "__main__":
+    main()
